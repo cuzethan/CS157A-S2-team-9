@@ -1,0 +1,1 @@
+## In src/main/java, make sure you input your MySQL credentials for db, user, and password.
