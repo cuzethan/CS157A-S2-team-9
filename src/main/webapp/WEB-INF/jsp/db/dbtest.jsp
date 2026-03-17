@@ -10,7 +10,7 @@
   </h2>
 
   <p class="text-sm text-slate-600 mb-4">
-    This page checks whether the app can connect to the database and list entries from the
+    Will delete this page soon. Just want to make sure the database is working.
     <span class="font-mono">Student</span> table.
   </p>
 

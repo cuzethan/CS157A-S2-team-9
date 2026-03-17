@@ -4,45 +4,38 @@
 %>
 <%@ include file="/WEB-INF/jsp/layout/header.jsp" %>
 
-<div class="bg-white rounded-xl shadow-sm p-8">
-  <div class="flex flex-col gap-6 md:flex-row md:items-center md:justify-between">
-    <div>
-      <p class="text-sm font-semibold text-blue-700">San José State University</p>
-      <h2 class="mt-2 text-3xl font-bold tracking-tight text-slate-900">
-        Buy &amp; sell with other Spartans
-      </h2>
-      <p class="mt-3 max-w-2xl text-slate-600">
-        Simple starter homepage for your JSP app. Add categories, listings, search, and auth links here.
-      </p>
-    </div>
+<div
+  class="fixed inset-0 -z-10"
+  style="background-image: url('<%= request.getContextPath() %>/assets/sjsu-background.png'); background-size: cover; background-position: center;"
+></div>
+<div class="fixed inset-0 -z-10 bg-slate-900/45"></div>
 
-    <div class="flex flex-wrap gap-3">
-      <a href="<%= request.getContextPath() %>/dbtest"
-         class="inline-flex items-center justify-center rounded-lg bg-blue-600 px-4 py-2 text-sm font-semibold text-white hover:bg-blue-700">
-        DB Test
+<div class="min-h-[70vh] flex items-center justify-center py-12">
+  <div class="w-full max-w-2xl bg-white/90 backdrop-blur rounded-2xl shadow-lg px-8 py-10 text-center">
+    <h2 class="text-4xl sm:text-6xl font-extrabold tracking-tight text-slate-900">
+      Welcome To SJSUMarketplace
+    </h2>
+    <p class="mt-4 text-base sm:text-lg text-slate-700">
+      A place to buy and sell with fellow Spartans!
+    </p>
+
+    <div class="mt-8 flex flex-wrap justify-center gap-3">
+      <a href="<%= request.getContextPath() %>/login"
+         class="inline-flex items-center justify-center rounded-lg bg-blue-600 px-5 py-2.5 text-sm font-semibold text-white hover:bg-blue-700">
+        Login
       </a>
-      <a href="#"
-         class="inline-flex items-center justify-center rounded-lg border border-slate-300 bg-white px-4 py-2 text-sm font-semibold text-slate-700 hover:bg-slate-50">
+      <a href="<%= request.getContextPath() %>/signup"
+         class="inline-flex items-center justify-center rounded-lg border border-slate-300 bg-white px-5 py-2.5 text-sm font-semibold text-slate-800 hover:bg-slate-50">
+        Sign up
+      </a>
+      <a href="<%= request.getContextPath() %>/listings"
+         class="inline-flex items-center justify-center rounded-lg border border-slate-300 bg-white px-5 py-2.5 text-sm font-semibold text-slate-800 hover:bg-slate-50">
         Browse listings
       </a>
     </div>
   </div>
 </div>
 
-<div class="mt-6 grid gap-4 md:grid-cols-3">
-  <div class="bg-white rounded-xl shadow-sm p-6">
-    <h3 class="text-sm font-semibold text-slate-900">Feature 1</h3>
-    <p class="mt-2 text-sm text-slate-600">Add a listings table/grid and filters.</p>
-  </div>
-  <div class="bg-white rounded-xl shadow-sm p-6">
-    <h3 class="text-sm font-semibold text-slate-900">Feature 2</h3>
-    <p class="mt-2 text-sm text-slate-600">Add login/register and user profiles.</p>
-  </div>
-  <div class="bg-white rounded-xl shadow-sm p-6">
-    <h3 class="text-sm font-semibold text-slate-900">Feature 3</h3>
-    <p class="mt-2 text-sm text-slate-600">Add create listing, messages, and checkout flow.</p>
-  </div>
-</div>
 
 <%@ include file="/WEB-INF/jsp/layout/footer.jsp" %>
 

@@ -30,7 +30,7 @@ public class DbTestServlet extends HttpServlet {
         try {
             Class.forName("com.mysql.jdbc.Driver");
             Connection con = DriverManager.getConnection(
-                    "jdbc:mysql://localhost:3306/le?autoReconnect=true&useSSL=false",
+                    "jdbc:mysql://localhost:3306/" + db + "?autoReconnect=true&useSSL=false",
                     user,
                     password
             );
