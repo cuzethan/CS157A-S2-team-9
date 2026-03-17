@@ -1,4 +1,10 @@
 import java.io.IOException;
+import java.security.MessageDigest;
+import java.security.NoSuchAlgorithmException;
+import java.sql.Connection;
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
+import java.sql.SQLException;
 import java.util.regex.Pattern;
 
 import javax.servlet.RequestDispatcher;
@@ -40,8 +46,59 @@ public class SignupServlet extends HttpServlet {
             return;
         }
 
-        // TODO: Insert user into DB, then redirect to login.
+        String sqlCheck = "SELECT email FROM Users WHERE email = ? OR username = ?";
+        String sqlInsert = "INSERT INTO Users (username, email, password) VALUES (?, ?, ?)";
+        try {
+            try (Connection con = Database.getConnection()) {
+
+                // Check for existing user
+                try (PreparedStatement check = con.prepareStatement(sqlCheck)) {
+                    check.setString(1, email);
+                    check.setString(2, username);
+                    try (ResultSet rs = check.executeQuery()) {
+                        if (rs.next()) {
+                            request.setAttribute("formError", "That email or username is already in use.");
+                            RequestDispatcher dispatcher = request.getRequestDispatcher("/WEB-INF/jsp/auth/signup.jsp");
+                            dispatcher.forward(request, response);
+                            return;
+                        }
+                    }
+                }
+
+                // Insert new user with hashed password
+                String passwordHash = hashPassword(password);
+                try (PreparedStatement insert = con.prepareStatement(sqlInsert)) {
+                    insert.setString(1, username);
+                    insert.setString(2, email);
+                    insert.setString(3, passwordHash);
+                    insert.executeUpdate();
+                }
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+            // Also show the message on the page so we can see it
+            request.setAttribute("formError", "Database error: " + e.getMessage());
+            RequestDispatcher dispatcher = request.getRequestDispatcher("/WEB-INF/jsp/auth/signup.jsp");
+            dispatcher.forward(request, response);
+            return;
+        }
+
+        // Success: send user to login
         response.sendRedirect(request.getContextPath() + "/login");
+    }
+
+    private static String hashPassword(String password) {
+        try {
+            MessageDigest digest = MessageDigest.getInstance("SHA-256");
+            byte[] hash = digest.digest(password.getBytes());
+            StringBuilder sb = new StringBuilder();
+            for (byte b : hash) {
+                sb.append(String.format("%02x", b));
+            }
+            return sb.toString();
+        } catch (NoSuchAlgorithmException e) {
+            throw new RuntimeException("Unable to hash password", e);
+        }
     }
 
     private static String validate(String username, String email, String password) {

@@ -8,10 +8,23 @@
   <h2 class="text-2xl font-bold tracking-tight text-slate-900">Login</h2>
   <p class="mt-1 text-sm text-slate-600">Welcome back. Sign in to continue.</p>
 
-  <form class="mt-6 space-y-4" method="post" action="#">
+  <%
+    String formError = (String) request.getAttribute("formError");
+    String emailValue = (String) request.getAttribute("emailValue");
+    if (formError != null) {
+  %>
+    <div class="mt-4 rounded-lg border border-red-200 bg-red-50 px-4 py-3 text-sm text-red-800">
+      <%= formError %>
+    </div>
+  <%
+    }
+  %>
+
+  <form class="mt-6 space-y-4" method="post" action="<%= request.getContextPath() %>/login">
     <div>
       <label class="block text-sm font-medium text-slate-700" for="email">Email</label>
       <input id="email" name="email" type="email" autocomplete="email"
+             value="<%= emailValue != null ? emailValue : "" %>"
              class="mt-1 w-full rounded-lg border border-slate-300 bg-white px-3 py-2 text-sm text-slate-900 shadow-sm focus:border-blue-600 focus:outline-none focus:ring-2 focus:ring-blue-600/20" />
     </div>
 
@@ -23,7 +36,7 @@
 
     <button type="submit"
             class="w-full inline-flex items-center justify-center rounded-lg bg-blue-600 px-4 py-2.5 text-sm font-semibold text-white hover:bg-blue-700">
-      Sign in
+      Login
     </button>
 
     <p class="text-center text-sm text-slate-600">

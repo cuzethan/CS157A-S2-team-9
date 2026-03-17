@@ -1,4 +1,10 @@
 import java.io.IOException;
+import java.security.MessageDigest;
+import java.security.NoSuchAlgorithmException;
+import java.sql.Connection;
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
+import java.sql.SQLException;
 
 import javax.servlet.RequestDispatcher;
 import javax.servlet.ServletException;
@@ -12,6 +18,69 @@ public class LoginServlet extends HttpServlet {
             throws ServletException, IOException {
         RequestDispatcher dispatcher = request.getRequestDispatcher("/WEB-INF/jsp/auth/login.jsp");
         dispatcher.forward(request, response);
+    }
+
+    @Override
+    protected void doPost(HttpServletRequest request, HttpServletResponse response)
+            throws ServletException, IOException {
+        String email = trimToNull(request.getParameter("email"));
+        String password = request.getParameter("password");
+
+        request.setAttribute("emailValue", email);
+
+        if (email == null || password == null || password.isEmpty()) {
+            setInvalidLogin(request, response);
+            return;
+        }
+
+        String passwordHash = hashPassword(password);
+        String sql = "SELECT 1 FROM Users WHERE email = ? AND password = ?";
+
+        try (Connection con = Database.getConnection();
+             PreparedStatement ps = con.prepareStatement(sql)) {
+            ps.setString(1, email);
+            ps.setString(2, passwordHash);
+            try (ResultSet rs = ps.executeQuery()) {
+                if (!rs.next()) {
+                    setInvalidLogin(request, response);
+                    return;
+                }
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+            setInvalidLogin(request, response);
+            return;
+        }
+
+        // For now, on successful login just redirect to home.
+        response.sendRedirect(request.getContextPath() + "/listings");
+    }
+
+    private static void setInvalidLogin(HttpServletRequest request, HttpServletResponse response)
+            throws ServletException, IOException {
+        request.setAttribute("formError", "Invalid email or password.");
+        RequestDispatcher dispatcher = request.getRequestDispatcher("/WEB-INF/jsp/auth/login.jsp");
+        dispatcher.forward(request, response);
+    }
+
+    private static String hashPassword(String password) {
+        try {
+            MessageDigest digest = MessageDigest.getInstance("SHA-256");
+            byte[] hash = digest.digest(password.getBytes());
+            StringBuilder sb = new StringBuilder();
+            for (byte b : hash) {
+                sb.append(String.format("%02x", b));
+            }
+            return sb.toString();
+        } catch (NoSuchAlgorithmException e) {
+            throw new RuntimeException("Unable to hash password", e);
+        }
+    }
+
+    private static String trimToNull(String value) {
+        if (value == null) return null;
+        String trimmed = value.trim();
+        return trimmed.isEmpty() ? null : trimmed;
     }
 }
 

@@ -19,7 +19,6 @@
       <nav class="flex gap-6 text-base font-medium text-slate-700">
         <a href="<%= request.getContextPath() %>/" class="hover:text-blue-700">Home</a>
         <a href="<%= request.getContextPath() %>/listings" class="hover:text-blue-700">Listings</a>
-        <a href="<%= request.getContextPath() %>/dbtest" class="hover:text-blue-700">DB Test</a>
         <a href="<%= request.getContextPath() %>/login" class="hover:text-blue-700">Login</a>
       </nav>
     </div>

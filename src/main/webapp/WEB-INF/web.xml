@@ -5,18 +5,6 @@
                              http://xmlns.jcp.org/xml/ns/javaee/web-app_3_1.xsd"
          version="3.1">
 
-    <!-- DbTest servlet -->
-    <servlet>
-        <servlet-name>DbTestServlet</servlet-name>
-        <!-- If DbTestServlet is in the default package (no package line), use just this: -->
-        <servlet-class>DbTestServlet</servlet-class>
-    </servlet>
-
-    <servlet-mapping>
-        <servlet-name>DbTestServlet</servlet-name>
-        <url-pattern>/dbtest</url-pattern>
-    </servlet-mapping>
-
     <!-- Home servlet -->
     <servlet>
         <servlet-name>HomeServlet</servlet-name>
