@@ -9,6 +9,7 @@ import java.sql.SQLException;
 import javax.servlet.RequestDispatcher;
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
+import javax.servlet.http.HttpSession;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
@@ -23,10 +24,12 @@ public class LoginServlet extends HttpServlet {
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
+
+        HttpSession session = request.getSession();
         String email = trimToNull(request.getParameter("email"));
         String password = request.getParameter("password");
 
-        request.setAttribute("emailValue", email);
+        session.setAttribute("emailValue", email);
 
         if (email == null || password == null || password.isEmpty()) {
             setInvalidLogin(request, response);
@@ -36,6 +39,7 @@ public class LoginServlet extends HttpServlet {
         String passwordHash = hashPassword(password);
         String sql = "SELECT 1 FROM Users WHERE email = ? AND password = ?";
 
+        //check for user & if password is correct
         try (Connection con = Database.getConnection();
              PreparedStatement ps = con.prepareStatement(sql)) {
             ps.setString(1, email);
@@ -52,8 +56,28 @@ public class LoginServlet extends HttpServlet {
             return;
         }
 
-        // For now, on successful login just redirect to home.
-        response.sendRedirect(request.getContextPath() + "/listings");
+        request.setAttribute("userEmail", email);
+
+        String adminSql = "SELECT 1 FROM Administrators WHERE email = ?";
+
+        //check for admin and redirect based on that
+        try (Connection con = Database.getConnection(); 
+            PreparedStatement ps = con.prepareStatement(adminSql)) {
+            ps.setString(1, email);
+            try (ResultSet rs = ps.executeQuery()) {
+                if (rs.next()) {
+                    session.setAttribute("isAdmin", true);
+                    response.sendRedirect(request.getContextPath() + "/admin");
+                } else {
+                    session.setAttribute("isAdmin", false);
+                    response.sendRedirect(request.getContextPath() + "/listings");
+                }
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+            setInvalidLogin(request, response);
+            return;
+        }
     }
 
     private static void setInvalidLogin(HttpServletRequest request, HttpServletResponse response)

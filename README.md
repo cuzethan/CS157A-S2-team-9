@@ -20,3 +20,4 @@ and many more!
 ## Important sidenotes for professor or anyone testing.
 
 * In src/main/java/Database.java, make sure you input your MySQL credentials for db, user, and password.
+* The url to access the website locally should be http://localhost:8080/CS157A-Project/
