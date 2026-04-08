@@ -21,3 +21,4 @@ and many more!
 
 * In src/main/java/Database.java, make sure you input your MySQL credentials for db, user, and password.
 * The url to access the website locally should be http://localhost:8080/CS157A-Project/
+* In the init_db.sql script, there's is a test user with admin already generated (Username: "testing", Password: "Testing123!")
