@@ -2,3 +2,7 @@ build
 .project
 .classpath
 .settings
+.idea
+out
+CS157A-S2-team-9.iml
+

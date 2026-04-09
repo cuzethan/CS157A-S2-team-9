@@ -60,4 +60,15 @@
         <url-pattern>/admin</url-pattern>
     </servlet-mapping>
 
+    <!-- Create Listing -->
+    <servlet>
+        <servlet-name>CreateListingServlet</servlet-name>
+        <servlet-class>CreateListingServlet</servlet-class>
+    </servlet>
+
+    <servlet-mapping>
+        <servlet-name>CreateListingServlet</servlet-name>
+        <url-pattern>/create-listing</url-pattern>
+    </servlet-mapping>
+
 </web-app>
