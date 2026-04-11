@@ -11,7 +11,6 @@ public class AdminServlet extends HttpServlet {
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
         Boolean isAdmin = (Boolean) request.getSession().getAttribute("isAdmin");
-        System.out.println("isAdmin: " + isAdmin);
         if (!Boolean.TRUE.equals(isAdmin)) {
             response.sendError(HttpServletResponse.SC_FORBIDDEN, "Admin access required.");
             return;

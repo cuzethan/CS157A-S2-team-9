@@ -20,6 +20,7 @@
     </p>
 
     <div class="mt-8 flex flex-wrap justify-center gap-3">
+      <% if (!loggedIn) { %>
       <a href="<%= request.getContextPath() %>/login"
          class="inline-flex items-center justify-center rounded-lg bg-blue-600 px-5 py-2.5 text-sm font-semibold text-white hover:bg-blue-700">
         Login
@@ -28,6 +29,7 @@
          class="inline-flex items-center justify-center rounded-lg border border-slate-300 bg-white px-5 py-2.5 text-sm font-semibold text-slate-800 hover:bg-slate-50">
         Sign up
       </a>
+      <% } %>
       <a href="<%= request.getContextPath() %>/listings"
          class="inline-flex items-center justify-center rounded-lg border border-slate-300 bg-white px-5 py-2.5 text-sm font-semibold text-slate-800 hover:bg-slate-50">
         Browse listings

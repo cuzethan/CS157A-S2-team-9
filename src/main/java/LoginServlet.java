@@ -29,10 +29,8 @@ public class LoginServlet extends HttpServlet {
         String email = trimToNull(request.getParameter("email"));
         String password = request.getParameter("password");
 
-        session.setAttribute("emailValue", email);
-
         if (email == null || password == null || password.isEmpty()) {
-            setInvalidLogin(request, response);
+            setInvalidLogin(request, response, email);
             return;
         }
 
@@ -46,17 +44,17 @@ public class LoginServlet extends HttpServlet {
             ps.setString(2, passwordHash);
             try (ResultSet rs = ps.executeQuery()) {
                 if (!rs.next()) {
-                    setInvalidLogin(request, response);
+                    setInvalidLogin(request, response, email);
                     return;
                 }
             }
         } catch (SQLException e) {
             e.printStackTrace();
-            setInvalidLogin(request, response);
+            setInvalidLogin(request, response, email);
             return;
         }
 
-        request.setAttribute("userEmail", email);
+        session.setAttribute("emailValue", email);
 
         String adminSql = "SELECT 1 FROM Administrators WHERE email = ?";
 
@@ -75,14 +73,15 @@ public class LoginServlet extends HttpServlet {
             }
         } catch (SQLException e) {
             e.printStackTrace();
-            setInvalidLogin(request, response);
+            setInvalidLogin(request, response, email);
             return;
         }
     }
 
-    private static void setInvalidLogin(HttpServletRequest request, HttpServletResponse response)
+    private static void setInvalidLogin(HttpServletRequest request, HttpServletResponse response, String email)
             throws ServletException, IOException {
         request.setAttribute("formError", "Invalid email or password.");
+        request.setAttribute("emailValue", email != null ? email : "");
         RequestDispatcher dispatcher = request.getRequestDispatcher("/WEB-INF/jsp/auth/login.jsp");
         dispatcher.forward(request, response);
     }

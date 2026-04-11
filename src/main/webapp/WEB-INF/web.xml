@@ -38,6 +38,17 @@
         <url-pattern>/login</url-pattern>
     </servlet-mapping>
 
+    <!-- Auth: logout -->
+    <servlet>
+        <servlet-name>LogoutServlet</servlet-name>
+        <servlet-class>LogoutServlet</servlet-class>
+    </servlet>
+
+    <servlet-mapping>
+        <servlet-name>LogoutServlet</servlet-name>
+        <url-pattern>/logout</url-pattern>
+    </servlet-mapping>
+
     <!-- Auth: signup -->
     <servlet>
         <servlet-name>SignupServlet</servlet-name>
