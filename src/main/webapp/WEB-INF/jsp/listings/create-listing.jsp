@@ -76,12 +76,49 @@
              class="mt-1 w-full rounded-lg border border-slate-300 bg-white px-3 py-2 text-sm text-slate-900 shadow-sm focus:border-blue-600 focus:outline-none focus:ring-2 focus:ring-blue-600/20" />
     </div>
     <div>
-      <label class="block text-sm font-medium text-slate-700" for="picture">Picture URL</label>
-      <input id="picture" name="picture" type="url"
-             placeholder="https://example.com/image.jpg"
-             value="<%= pictureValue != null ? pictureValue : "" %>"
-             class="mt-1 w-full rounded-lg border border-slate-300 bg-white px-3 py-2 text-sm text-slate-900 shadow-sm focus:border-blue-600 focus:outline-none focus:ring-2 focus:ring-blue-600/20" />
+      <label class="block text-sm font-medium text-slate-700" for="pictureFile">Picture</label>
+      <input id="pictureFile" type="file" accept="image/*"
+             class="mt-1 w-full rounded-lg border border-slate-300 bg-white px-3 py-2 text-sm text-slate-900 shadow-sm file:mr-3 file:rounded-md file:border-0 file:bg-blue-50 file:px-3 file:py-1 file:text-sm file:font-semibold file:text-blue-700 hover:file:bg-blue-100 focus:border-blue-600 focus:outline-none focus:ring-2 focus:ring-blue-600/20" />
+      <input id="picture" name="picture" type="hidden"
+             value="<%= pictureValue != null ? pictureValue : "" %>" />
+      <p id="pictureError" class="mt-1 text-sm text-red-600 hidden"></p>
+      <img id="picturePreview" src="<%= pictureValue != null ? pictureValue : "" %>"
+           alt="Preview"
+           class="mt-2 h-32 w-32 rounded-lg object-cover border border-slate-200 <%= pictureValue != null ? "" : "hidden" %>" />
     </div>
+
+    <script>
+      document.getElementById('pictureFile').addEventListener('change', function(e) {
+        var file = e.target.files[0];
+        var hidden = document.getElementById('picture');
+        var preview = document.getElementById('picturePreview');
+        var error = document.getElementById('pictureError');
+        error.classList.add('hidden');
+
+        if (!file) {
+          hidden.value = '';
+          preview.classList.add('hidden');
+          return;
+        }
+
+        if (file.size > 2 * 1024 * 1024) {
+          error.textContent = 'Image must be under 2 MB.';
+          error.classList.remove('hidden');
+          e.target.value = '';
+          hidden.value = '';
+          preview.classList.add('hidden');
+          return;
+        }
+
+        var reader = new FileReader();
+        reader.onload = function(ev) {
+          hidden.value = ev.target.result;
+          preview.src = ev.target.result;
+          preview.classList.remove('hidden');
+        };
+        reader.readAsDataURL(file);
+      });
+    </script>
 
     <button type="submit"
             class="w-full inline-flex items-center justify-center rounded-lg bg-blue-600 px-4 py-2.5 text-sm font-semibold text-white hover:bg-blue-700">

@@ -30,34 +30,27 @@
       </p>
     </div>
   <% } else { %>
-    <div class="mt-8 grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
+    <div class="mt-6 grid grid-cols-2 gap-3 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 xl:grid-cols-6">
       <% for (Map<String, String> post : posts) {
            String pic = post.get("picture");
-           String desc = post.get("description");
-           if (desc != null && desc.length() > 100) {
-             desc = desc.substring(0, 100) + "...";
-           }
       %>
-        <div class="rounded-xl border border-slate-200 bg-white shadow-sm overflow-hidden flex flex-col">
-          <% if (pic != null && !pic.isEmpty()) { %>
-            <img src="<%= pic %>" alt="<%= post.get("title") %>"
-                 class="h-40 w-full object-cover" />
-          <% } else { %>
-            <div class="h-40 w-full bg-slate-100 flex items-center justify-center">
-              <span class="text-slate-400 text-sm">No image</span>
-            </div>
-          <% } %>
-          <div class="p-4 flex flex-col flex-1">
-            <h3 class="text-base font-semibold text-slate-900 truncate"><%= post.get("title") %></h3>
-            <p class="mt-1 text-lg font-bold text-blue-600">$<%= post.get("price") %></p>
-            <p class="mt-2 text-sm text-slate-600 flex-1"><%= desc %></p>
-            <div class="mt-3 flex items-center gap-1 text-xs text-slate-500">
-              <svg class="h-3.5 w-3.5" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
-                <path stroke-linecap="round" stroke-linejoin="round" d="M17.657 16.657L13.414 20.9a2 2 0 01-2.828 0l-4.243-4.243a8 8 0 1111.314 0z" />
-                <path stroke-linecap="round" stroke-linejoin="round" d="M15 11a3 3 0 11-6 0 3 3 0 016 0z" />
-              </svg>
-              <%= post.get("meetupLocation") != null ? post.get("meetupLocation") : "—" %>
-            </div>
+        <div class="group cursor-pointer">
+          <div class="aspect-square overflow-hidden rounded-lg bg-slate-100">
+            <% if (pic != null && !pic.isEmpty()) { %>
+              <img src="<%= pic %>" alt="<%= post.get("title") %>"
+                   class="h-full w-full object-cover transition-transform duration-300 group-hover:scale-105" />
+            <% } else { %>
+              <div class="h-full w-full flex items-center justify-center">
+                <span class="text-slate-400 text-xs">No image</span>
+              </div>
+            <% } %>
+          </div>
+          <div class="mt-2 px-0.5">
+            <p class="text-sm font-bold text-slate-900">$<%= post.get("price") %></p>
+            <p class="text-[13px] font-normal text-slate-800 line-clamp-2 leading-tight h-9 mt-0.5"><%= post.get("title") %></p>
+            <p class="text-[12px] text-slate-500 truncate mt-1">
+              <%= post.get("meetupLocation") != null ? post.get("meetupLocation") : "" %>
+            </p>
           </div>
         </div>
       <% } %>
