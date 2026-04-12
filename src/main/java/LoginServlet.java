@@ -26,37 +26,40 @@ public class LoginServlet extends HttpServlet {
             throws ServletException, IOException {
 
         HttpSession session = request.getSession();
-        String email = trimToNull(request.getParameter("email"));
+        String username = trimToNull(request.getParameter("username"));
         String password = request.getParameter("password");
 
-        if (email == null || password == null || password.isEmpty()) {
-            setInvalidLogin(request, response, email);
+        if (username == null || password == null || password.isEmpty()) {
+            setInvalidLogin(request, response, username);
             return;
         }
 
         String passwordHash = hashPassword(password);
-        String sql = "SELECT 1 FROM Users WHERE email = ? AND password = ?";
+        String sql = "SELECT email FROM Users WHERE username = ? AND password = ?";
+        String email = null;
 
         //check for user & if password is correct
         try (Connection con = Database.getConnection();
              PreparedStatement ps = con.prepareStatement(sql)) {
-            ps.setString(1, email);
+            ps.setString(1, username);
             ps.setString(2, passwordHash);
             try (ResultSet rs = ps.executeQuery()) {
                 if (!rs.next()) {
-                    setInvalidLogin(request, response, email);
+                    setInvalidLogin(request, response, username);
                     return;
                 }
+                email = rs.getString("email");
+                session.setAttribute("emailValue", email);
             }
         } catch (SQLException e) {
             e.printStackTrace();
-            setInvalidLogin(request, response, email);
+            setInvalidLogin(request, response, username);
             return;
         }
 
-        session.setAttribute("emailValue", email);
+        session.setAttribute("usernameValue", username);
 
-        String adminSql = "SELECT 1 FROM Administrators WHERE email = ?";
+        String adminSql = "SELECT email FROM Administrators WHERE email = ?";
 
         //check for admin and redirect based on that
         try (Connection con = Database.getConnection(); 
@@ -73,15 +76,15 @@ public class LoginServlet extends HttpServlet {
             }
         } catch (SQLException e) {
             e.printStackTrace();
-            setInvalidLogin(request, response, email);
+            setInvalidLogin(request, response, username);
             return;
         }
     }
 
-    private static void setInvalidLogin(HttpServletRequest request, HttpServletResponse response, String email)
+    private static void setInvalidLogin(HttpServletRequest request, HttpServletResponse response, String username)
             throws ServletException, IOException {
-        request.setAttribute("formError", "Invalid email or password.");
-        request.setAttribute("emailValue", email != null ? email : "");
+        request.setAttribute("formError", "Invalid username or password.");
+        request.setAttribute("usernameValue", username != null ? username : "");
         RequestDispatcher dispatcher = request.getRequestDispatcher("/WEB-INF/jsp/auth/login.jsp");
         dispatcher.forward(request, response);
     }

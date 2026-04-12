@@ -10,7 +10,7 @@
 
   <%
     String formError = (String) request.getAttribute("formError");
-    String emailValue = (String) request.getAttribute("emailValue");
+    String usernameValue = (String) request.getAttribute("usernameValue");
     if (formError != null) {
   %>
     <div class="mt-4 rounded-lg border border-red-200 bg-red-50 px-4 py-3 text-sm text-red-800">
@@ -22,9 +22,9 @@
 
   <form class="mt-6 space-y-4" method="post" action="<%= request.getContextPath() %>/login">
     <div>
-      <label class="block text-sm font-medium text-slate-700" for="email">Email</label>
-      <input id="email" name="email" type="email" autocomplete="email"
-             value="<%= emailValue != null ? emailValue : "" %>"
+      <label class="block text-sm font-medium text-slate-700" for="username">Username</label>
+      <input id="username" name="username" type="text" autocomplete="username"
+             value="<%= usernameValue != null ? usernameValue : "" %>"
              class="mt-1 w-full rounded-lg border border-slate-300 bg-white px-3 py-2 text-sm text-slate-900 shadow-sm focus:border-blue-600 focus:outline-none focus:ring-2 focus:ring-blue-600/20" />
     </div>
 
