@@ -56,7 +56,7 @@ CREATE TABLE `Posts` (
   `title` varchar(45) DEFAULT NULL,
   `price` decimal(10,2) DEFAULT NULL,
   `description` longtext,
-  `picture` varchar(45) DEFAULT NULL,
+  `picture` longtext,
   `location_details_specific` varchar(255) DEFAULT NULL,
   `item_status` varchar(45) DEFAULT NULL,
   `email` varchar(255) DEFAULT NULL,
