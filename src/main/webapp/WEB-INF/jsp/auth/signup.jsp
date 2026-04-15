@@ -1,4 +1,107 @@
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
+<%@ page import="com.cs157a.Database" %>
+<%@ page import="java.security.MessageDigest" %>
+<%@ page import="java.security.NoSuchAlgorithmException" %>
+<%@ page import="java.sql.Connection" %>
+<%@ page import="java.sql.PreparedStatement" %>
+<%@ page import="java.sql.ResultSet" %>
+<%@ page import="java.sql.SQLException" %>
+<%@ page import="java.util.regex.Pattern" %>
+<%!
+private static final Pattern USERNAME_PATTERN = Pattern.compile("^[A-Za-z0-9_]{3,20}$");
+private static final Pattern EMAIL_PATTERN = Pattern.compile("^[^\\s@]+@sjsu\\.edu$");
+private static final Pattern PASSWORD_UPPER = Pattern.compile(".*[A-Z].*");
+private static final Pattern PASSWORD_LOWER = Pattern.compile(".*[a-z].*");
+private static final Pattern PASSWORD_DIGIT = Pattern.compile(".*[0-9].*");
+private static final Pattern PASSWORD_SYMBOL = Pattern.compile(".*[^A-Za-z0-9].*");
+
+private static String hashPassword(String password) {
+    try {
+        MessageDigest digest = MessageDigest.getInstance("SHA-256");
+        byte[] hash = digest.digest(password.getBytes());
+        StringBuilder sb = new StringBuilder();
+        for (byte b : hash) {
+            sb.append(String.format("%02x", b));
+        }
+        return sb.toString();
+    } catch (NoSuchAlgorithmException e) {
+        throw new RuntimeException("Unable to hash password", e);
+    }
+}
+
+private static String validateSignup(String username, String email, String password) {
+    if (username == null || !USERNAME_PATTERN.matcher(username).matches()) {
+        return "Username must be 3–20 characters and contain only letters, numbers, or underscore (_).";
+    }
+    if (email == null || !EMAIL_PATTERN.matcher(email).matches()) {
+        return "Email must be a valid SJSU email ending with @sjsu.edu.";
+    }
+    if (password == null || password.length() < 8) {
+        return "Password must be at least 8 characters.";
+    }
+    if (!PASSWORD_UPPER.matcher(password).matches()
+            || !PASSWORD_LOWER.matcher(password).matches()
+            || !PASSWORD_DIGIT.matcher(password).matches()
+            || !PASSWORD_SYMBOL.matcher(password).matches()) {
+        return "Password must include at least 1 uppercase letter, 1 lowercase letter, 1 number, and 1 symbol.";
+    }
+    return null;
+}
+
+private static String trimToNull(String value) {
+    if (value == null) return null;
+    String trimmed = value.trim();
+    return trimmed.isEmpty() ? null : trimmed;
+}
+%>
+<%
+if ("POST".equalsIgnoreCase(request.getMethod())) {
+    String username = trimToNull(request.getParameter("username"));
+    String email = trimToNull(request.getParameter("email"));
+    String password = request.getParameter("password");
+
+    request.setAttribute("usernameValue", username);
+    request.setAttribute("emailValue", email);
+
+    String error = validateSignup(username, email, password);
+    if (error != null) {
+        request.setAttribute("formError", error);
+    } else {
+        String sqlCheck = "SELECT email FROM Users WHERE email = ? OR username = ?";
+        String sqlInsert = "INSERT INTO Users (username, email, password) VALUES (?, ?, ?)";
+        boolean done = false;
+        try (Connection con = Database.getConnection()) {
+            try (PreparedStatement check = con.prepareStatement(sqlCheck)) {
+                check.setString(1, email);
+                check.setString(2, username);
+                try (ResultSet rs = check.executeQuery()) {
+                    if (rs.next()) {
+                        request.setAttribute("formError", "That email or username is already in use.");
+                        done = true;
+                    }
+                }
+            }
+            if (!done) {
+                String passwordHash = hashPassword(password);
+                try (PreparedStatement insert = con.prepareStatement(sqlInsert)) {
+                    insert.setString(1, username);
+                    insert.setString(2, email);
+                    insert.setString(3, passwordHash);
+                    insert.executeUpdate();
+                }
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+            request.setAttribute("formError", "Database error: " + e.getMessage());
+            done = true;
+        }
+        if (!done && request.getAttribute("formError") == null) {
+            response.sendRedirect(request.getContextPath() + "/login");
+            return;
+        }
+    }
+}
+%>
 <%
   request.setAttribute("pageTitle", "Sign up - SJSUMarketplace");
 %>

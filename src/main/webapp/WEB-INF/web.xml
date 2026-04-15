@@ -5,80 +5,66 @@
                              http://xmlns.jcp.org/xml/ns/javaee/web-app_3_1.xsd"
          version="3.1">
 
-    <!-- Home servlet -->
     <servlet>
-        <servlet-name>HomeServlet</servlet-name>
-        <servlet-class>HomeServlet</servlet-class>
+        <servlet-name>HomeJsp</servlet-name>
+        <jsp-file>/WEB-INF/jsp/home.jsp</jsp-file>
     </servlet>
-
     <servlet-mapping>
-        <servlet-name>HomeServlet</servlet-name>
+        <servlet-name>HomeJsp</servlet-name>
         <url-pattern>/home</url-pattern>
     </servlet-mapping>
 
-    <!-- Listings -->
     <servlet>
-        <servlet-name>ListingsServlet</servlet-name>
-        <servlet-class>ListingsServlet</servlet-class>
+        <servlet-name>ListingsJsp</servlet-name>
+        <jsp-file>/WEB-INF/jsp/listings/listings.jsp</jsp-file>
     </servlet>
-
     <servlet-mapping>
-        <servlet-name>ListingsServlet</servlet-name>
+        <servlet-name>ListingsJsp</servlet-name>
         <url-pattern>/listings</url-pattern>
     </servlet-mapping>
 
-    <!-- Auth: login -->
     <servlet>
-        <servlet-name>LoginServlet</servlet-name>
-        <servlet-class>LoginServlet</servlet-class>
+        <servlet-name>LoginJsp</servlet-name>
+        <jsp-file>/WEB-INF/jsp/auth/login.jsp</jsp-file>
     </servlet>
-
     <servlet-mapping>
-        <servlet-name>LoginServlet</servlet-name>
+        <servlet-name>LoginJsp</servlet-name>
         <url-pattern>/login</url-pattern>
     </servlet-mapping>
 
-    <!-- Auth: logout -->
     <servlet>
-        <servlet-name>LogoutServlet</servlet-name>
-        <servlet-class>LogoutServlet</servlet-class>
+        <servlet-name>LogoutJsp</servlet-name>
+        <jsp-file>/WEB-INF/jsp/auth/logout.jsp</jsp-file>
     </servlet>
-
     <servlet-mapping>
-        <servlet-name>LogoutServlet</servlet-name>
+        <servlet-name>LogoutJsp</servlet-name>
         <url-pattern>/logout</url-pattern>
     </servlet-mapping>
 
-    <!-- Auth: signup -->
     <servlet>
-        <servlet-name>SignupServlet</servlet-name>
-        <servlet-class>SignupServlet</servlet-class>
+        <servlet-name>SignupJsp</servlet-name>
+        <jsp-file>/WEB-INF/jsp/auth/signup.jsp</jsp-file>
     </servlet>
-
     <servlet-mapping>
-        <servlet-name>SignupServlet</servlet-name>
+        <servlet-name>SignupJsp</servlet-name>
         <url-pattern>/signup</url-pattern>
     </servlet-mapping>
 
-    <!-- Admin -->
     <servlet>
-        <servlet-name>AdminServlet</servlet-name>
-        <servlet-class>AdminServlet</servlet-class>
+        <servlet-name>AdminJsp</servlet-name>
+        <jsp-file>/WEB-INF/jsp/admin.jsp</jsp-file>
     </servlet>
-
     <servlet-mapping>
-        <servlet-name>AdminServlet</servlet-name>
+        <servlet-name>AdminJsp</servlet-name>
         <url-pattern>/admin</url-pattern>
     </servlet-mapping>
 
-    <!-- Create Listing -->
     <servlet>
-        <servlet-name>CreateListingServlet</servlet-name>
-        <servlet-class>CreateListingServlet</servlet-class>
+        <servlet-name>CreateListingJsp</servlet-name>
+        <jsp-file>/WEB-INF/jsp/listings/create-listing.jsp</jsp-file>
     </servlet>
-
     <servlet-mapping>
-        <servlet-name>CreateListingServlet</servlet-name>
+        <servlet-name>CreateListingJsp</servlet-name>
         <url-pattern>/create-listing</url-pattern>
     </servlet-mapping>
 

@@ -1,4 +1,94 @@
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
+<%@ page import="com.cs157a.Database" %>
+<%@ page import="java.security.MessageDigest" %>
+<%@ page import="java.security.NoSuchAlgorithmException" %>
+<%@ page import="java.sql.Connection" %>
+<%@ page import="java.sql.PreparedStatement" %>
+<%@ page import="java.sql.ResultSet" %>
+<%@ page import="java.sql.SQLException" %>
+<%!
+private static String hashPassword(String password) {
+    try {
+        MessageDigest digest = MessageDigest.getInstance("SHA-256");
+        byte[] hash = digest.digest(password.getBytes());
+        StringBuilder sb = new StringBuilder();
+        for (byte b : hash) {
+            sb.append(String.format("%02x", b));
+        }
+        return sb.toString();
+    } catch (NoSuchAlgorithmException e) {
+        throw new RuntimeException("Unable to hash password", e);
+    }
+}
+
+private static String trimToNull(String value) {
+    if (value == null) return null;
+    String trimmed = value.trim();
+    return trimmed.isEmpty() ? null : trimmed;
+}
+%>
+<%
+if ("POST".equalsIgnoreCase(request.getMethod())) {
+    javax.servlet.http.HttpSession userSession = request.getSession();
+    String username = trimToNull(request.getParameter("username"));
+    String password = request.getParameter("password");
+
+    if (username == null || password == null || password.isEmpty()) {
+        request.setAttribute("formError", "Invalid username or password.");
+        request.setAttribute("usernameValue", username != null ? username : "");
+    } else {
+        String passwordHash = hashPassword(password);
+        String sql = "SELECT email FROM Users WHERE username = ? AND password = ?";
+        String email = null;
+        boolean failed = false;
+
+        try (Connection con = Database.getConnection();
+             PreparedStatement ps = con.prepareStatement(sql)) {
+            ps.setString(1, username);
+            ps.setString(2, passwordHash);
+            try (ResultSet rs = ps.executeQuery()) {
+                if (!rs.next()) {
+                    request.setAttribute("formError", "Invalid username or password.");
+                    request.setAttribute("usernameValue", username);
+                    failed = true;
+                } else {
+                    email = rs.getString("email");
+                    userSession.setAttribute("emailValue", email);
+                }
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+            request.setAttribute("formError", "Invalid username or password.");
+            request.setAttribute("usernameValue", username);
+            failed = true;
+        }
+
+        if (!failed && email != null) {
+            userSession.setAttribute("usernameValue", username);
+            String adminSql = "SELECT email FROM Administrators WHERE email = ?";
+            try (Connection con = Database.getConnection();
+                 PreparedStatement ps = con.prepareStatement(adminSql)) {
+                ps.setString(1, email);
+                try (ResultSet rs = ps.executeQuery()) {
+                    if (rs.next()) {
+                        userSession.setAttribute("isAdmin", true);
+                        response.sendRedirect(request.getContextPath() + "/admin");
+                        return;
+                    } else {
+                        userSession.setAttribute("isAdmin", false);
+                        response.sendRedirect(request.getContextPath() + "/listings");
+                        return;
+                    }
+                }
+            } catch (SQLException e) {
+                e.printStackTrace();
+                request.setAttribute("formError", "Invalid username or password.");
+                request.setAttribute("usernameValue", username);
+            }
+        }
+    }
+}
+%>
 <%
   request.setAttribute("pageTitle", "Login - SJSUMarketplace");
 %>

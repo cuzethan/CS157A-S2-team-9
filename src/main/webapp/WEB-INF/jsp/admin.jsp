@@ -1,5 +1,12 @@
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 <%
+  Boolean sessionIsAdmin = (Boolean) request.getSession().getAttribute("isAdmin");
+  if (!Boolean.TRUE.equals(sessionIsAdmin)) {
+    response.sendError(javax.servlet.http.HttpServletResponse.SC_FORBIDDEN, "Admin access required.");
+    return;
+  }
+%>
+<%
   request.setAttribute("pageTitle", "Admin - SJSUMarketplace");
 %>
 <%@ include file="/WEB-INF/jsp/layout/header.jsp" %>
