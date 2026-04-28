@@ -9,13 +9,14 @@ So far, we were able to sucessfully immplement our homepage, and some of the fea
 3. Allow users to log out by invalidating session and returning to home.
 4. Allow authenticated users to create listings (title, price, description, meetup location, optional image).
 5. Allow users to browse and filter listings by keyword, location, price range, and sort order.
-6. Allowed administrators to see additional header for their personal dashboard (acutal functionality still in progress)
+6. Allow users to edit their listings and manage the status of items (available, sold)
+7. Allowed administrators to see additional header for their personal dashboard (acutal functionality still in progress)
     - Non-admins will not be able to access it.
-7. Allowed adminstrators to search through accounts by emamil/username and delete them
-8. Allowed administrators to easily filter/sort through users by clicking the columns
-9. Allowed administrators to click a user's email/username to open a dedicated workspace for that user's posts.
-10. Allowed administrators to edit selected users' posts (title, price, description, meetup location, status, and related fields).
-11. Allowed administrators to delete selected users' posts directly from the admin workspace.
+8. Allowed adminstrators to search through accounts by emamil/username and delete them
+9. Allowed administrators to easily filter/sort through users by clicking the columns
+10. Allowed administrators to click a user's email/username to open a dedicated workspace for that user's posts.
+11. Allowed administrators to edit selected users' posts (title, price, description, meetup location, status, and related fields).
+12. Allowed administrators to delete selected users' posts directly from the admin workspace.
 
 and many more!
 
