@@ -11,13 +11,8 @@ So far, we were able to sucessfully immplement our homepage, and some of the fea
 5. Allow users to browse and filter listings by keyword, location, price range, and sort order.
 6. Allowed administrators to see additional header for their personal dashboard (acutal functionality still in progress)
     - Non-admins will not be able to access it.
-
-## Some features we want to add
-
-1. Add session authentication to verify user login
-2. Implement logging out
-3. Let users post listings
-4. Let users communicate with other users
+7. Allowed adminstrators to search through accounts by emamil/username and delete them
+8. Allowed administrators to easily filter/sort through users by clicking the columns
 
 and many more!
 
