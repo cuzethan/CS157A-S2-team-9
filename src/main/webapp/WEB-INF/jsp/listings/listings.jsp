@@ -44,7 +44,7 @@ if ("GET".equalsIgnoreCase(request.getMethod())) {
         "SELECT p.post_ID, p.title, p.price, p.description, p.picture, "
       + "p.item_status, p.email, m.meetup_location "
       + "FROM Posts p "
-      + "LEFT JOIN MeetupLocation m ON p.meetup_id = m.meetupID "
+      + "JOIN MeetupLocation m ON p.meetup_id = m.meetupID "
       + "WHERE p.item_status = 'Available'"
     );
     List<Object> params = new ArrayList<>();

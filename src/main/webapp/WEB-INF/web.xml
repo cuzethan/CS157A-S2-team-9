@@ -68,4 +68,22 @@
         <url-pattern>/create-listing</url-pattern>
     </servlet-mapping>
 
+    <servlet>
+        <servlet-name>MyListingsJsp</servlet-name>
+        <jsp-file>/WEB-INF/jsp/listings/my-listings.jsp</jsp-file>
+    </servlet>
+    <servlet-mapping>
+        <servlet-name>MyListingsJsp</servlet-name>
+        <url-pattern>/my-listings</url-pattern>
+    </servlet-mapping>
+
+    <servlet>
+        <servlet-name>EditListingJsp</servlet-name>
+        <jsp-file>/WEB-INF/jsp/listings/edit-listing.jsp</jsp-file>
+    </servlet>
+    <servlet-mapping>
+        <servlet-name>EditListingJsp</servlet-name>
+        <url-pattern>/edit-listing</url-pattern>
+    </servlet-mapping>
+
 </web-app>

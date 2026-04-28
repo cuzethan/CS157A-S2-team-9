@@ -27,6 +27,9 @@
         <a href="<%= request.getContextPath() %>/admin" class="hover:text-blue-700">Admin</a>
         <% } %>
         <a href="<%= request.getContextPath() %>/listings" class="hover:text-blue-700">Listings</a>
+        <% if (loggedIn) { %>
+        <a href="<%= request.getContextPath() %>/my-listings" class="hover:text-blue-700">My Listings</a>
+        <% } %>
         <% if (!loggedIn) { %>
         <a href="<%= request.getContextPath() %>/login" class="hover:text-blue-700">Login</a>
         <% } else {
