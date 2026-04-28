@@ -13,6 +13,9 @@ So far, we were able to sucessfully immplement our homepage, and some of the fea
     - Non-admins will not be able to access it.
 7. Allowed adminstrators to search through accounts by emamil/username and delete them
 8. Allowed administrators to easily filter/sort through users by clicking the columns
+9. Allowed administrators to click a user's email/username to open a dedicated workspace for that user's posts.
+10. Allowed administrators to edit selected users' posts (title, price, description, meetup location, status, and related fields).
+11. Allowed administrators to delete selected users' posts directly from the admin workspace.
 
 and many more!
 
