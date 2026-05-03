@@ -85,5 +85,63 @@
         <servlet-name>EditListingJsp</servlet-name>
         <url-pattern>/edit-listing</url-pattern>
     </servlet-mapping>
+    <servlet>
+    	<servlet-name>DeleteAccountJsp</servlet-name>
+    	<jsp-file>/WEB-INF/jsp/auth/delete-account.jsp</jsp-file>
+	</servlet>
+	<servlet-mapping>
+    	<servlet-name>DeleteAccountJsp</servlet-name>
+    	<url-pattern>/delete-account</url-pattern>
+	</servlet-mapping>
+	<servlet>
+    	<servlet-name>MessagesJsp</servlet-name>
+    	<jsp-file>/WEB-INF/jsp/messages/router.jsp</jsp-file>
+	</servlet>
+		<servlet-mapping>
+    	<servlet-name>MessagesJsp</servlet-name>
+    	<url-pattern>/messages</url-pattern>
+	</servlet-mapping>
 
+	<servlet>
+    <servlet-name>InboxJsp</servlet-name>
+    <jsp-file>/WEB-INF/jsp/messages/inbox.jsp</jsp-file>
+</servlet>
+<servlet-mapping>
+    <servlet-name>InboxJsp</servlet-name>
+    <url-pattern>/inbox</url-pattern>
+</servlet-mapping>
+<servlet>
+    <servlet-name>SubmitReportJsp</servlet-name>
+    <jsp-file>/WEB-INF/jsp/reports/submit-report.jsp</jsp-file>
+</servlet>
+<servlet-mapping>
+    <servlet-name>SubmitReportJsp</servlet-name>
+    <url-pattern>/submit-report</url-pattern>
+</servlet-mapping>
+
+<servlet>
+    <servlet-name>AdminReportsJsp</servlet-name>
+    <jsp-file>/WEB-INF/jsp/admin-reports.jsp</jsp-file>
+</servlet>
+<servlet-mapping>
+    <servlet-name>AdminReportsJsp</servlet-name>
+    <url-pattern>/admin-reports</url-pattern>
+</servlet-mapping>
+<servlet>
+    <servlet-name>ConfirmSaleJsp</servlet-name>
+    <jsp-file>/WEB-INF/jsp/listings/confirm-sale.jsp</jsp-file>
+</servlet>
+<servlet-mapping>
+    <servlet-name>ConfirmSaleJsp</servlet-name>
+    <url-pattern>/confirm-sale</url-pattern>
+</servlet-mapping>
+
+<servlet>
+    <servlet-name>MyTransactionsJsp</servlet-name>
+    <jsp-file>/WEB-INF/jsp/listings/my-transactions.jsp</jsp-file>
+</servlet>
+<servlet-mapping>
+    <servlet-name>MyTransactionsJsp</servlet-name>
+    <url-pattern>/my-transactions</url-pattern>
+</servlet-mapping>
 </web-app>

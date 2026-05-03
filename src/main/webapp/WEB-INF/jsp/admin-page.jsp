@@ -27,6 +27,7 @@
 
   <%-- Renders the user table and, when selected, the inline post workspace. --%>
   <%@ include file="/WEB-INF/jsp/admin/_user-accounts-section.jsp" %>
+  <%@ include file="/WEB-INF/jsp/admin/_transactions-section.jsp" %>
 </div>
 
 <script>

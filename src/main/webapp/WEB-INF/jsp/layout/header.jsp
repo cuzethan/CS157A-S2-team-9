@@ -23,6 +23,18 @@
           Object admin = session.getAttribute("isAdmin");
           boolean isAdmin = admin != null && (boolean) admin;
         %>
+        <% if (loggedIn) { %>
+		<a href="<%= request.getContextPath() %>/my-transactions" class="hover:text-blue-700">Transactions</a>
+		<% } %>
+        <% if (loggedIn && isAdmin) { %>
+		<a href="<%= request.getContextPath() %>/admin-reports" class="hover:text-blue-700">Reports</a>
+		<% } %>
+		<% if (loggedIn && !isAdmin) { %>
+		<a href="<%= request.getContextPath() %>/submit-report" class="hover:text-blue-700">Report</a>
+		<% } %>
+        <% if (loggedIn) { %>
+		<a href="<%= request.getContextPath() %>/inbox" class="hover:text-blue-700">Inbox</a>
+		<% } %>
         <% if (loggedIn && isAdmin) { %>
         <a href="<%= request.getContextPath() %>/admin" class="hover:text-blue-700">Admin</a>
         <% } %>
@@ -46,6 +58,10 @@
           <div id="user-menu-panel" class="hidden absolute right-0 top-full z-50 mt-2 w-56 rounded-xl border border-slate-200 bg-white py-1 shadow-lg" role="menu">
             <div class="border-b border-slate-100 px-4 py-2 text-xs text-slate-500 truncate" title="<%= safeEmail %>"><%= safeEmail %></div>
             <form method="post" action="<%= ctx %>/logout" class="px-1 py-1">
+            <a href="<%= ctx %>/delete-account" role="menuitem"
+   				class="block rounded-lg px-3 py-2 text-left text-sm font-medium text-slate-700 hover:bg-slate-50 mx-1">
+  				Account Settings
+			</a>
               <button type="submit" role="menuitem"
                       class="w-full rounded-lg px-3 py-2 text-left text-sm font-medium text-red-700 hover:bg-red-50">
                 Log out

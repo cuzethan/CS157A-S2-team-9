@@ -1,3 +1,4 @@
+<%@ page import="java.math.BigDecimal" %>
 <%!
 private static String trimToNull(String value) {
   if (value == null) return null;

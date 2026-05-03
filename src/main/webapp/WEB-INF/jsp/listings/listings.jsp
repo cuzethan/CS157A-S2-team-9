@@ -33,6 +33,9 @@ private static String trimToEmpty(String value) {
 }
 %>
 <%
+Object _emailAttr = session.getAttribute("emailValue");
+String myEmail = (_emailAttr != null && !String.valueOf(_emailAttr).trim().isEmpty())
+                 ? (String) _emailAttr : null;
 if ("GET".equalsIgnoreCase(request.getMethod())) {
     String q        = trimToEmpty(request.getParameter("q"));
     String location = trimToEmpty(request.getParameter("location"));
@@ -267,12 +270,18 @@ if ("GET".equalsIgnoreCase(request.getMethod())) {
             <% } %>
           </div>
           <div class="mt-2 px-0.5 flex flex-col flex-1">
-            <p class="text-sm font-bold text-slate-900">$<%= post.get("price") %></p>
-            <p class="text-[13px] font-normal text-slate-800 line-clamp-2 leading-tight mt-0.5"><%= post.get("title") %></p>
-            <p class="text-[12px] text-slate-500 truncate mt-1">
-              <%= post.get("meetupLocation") != null ? post.get("meetupLocation") : "" %>
-            </p>
-          </div>
+    		<p class="text-sm font-bold text-slate-900">$<%= post.get("price") %></p>
+   		 	<p class="text-[13px] font-normal text-slate-800 line-clamp-2 leading-tight mt-0.5"><%= post.get("title") %></p>
+    		<p class="text-[12px] text-slate-500 truncate mt-1">
+      			<%= post.get("meetupLocation") != null ? post.get("meetupLocation") : "" %>
+    		</p>
+    		<% if (loggedIn && myEmail != null && !myEmail.equals(post.get("email"))) { %>
+  				<a href="<%= request.getContextPath() %>/messages?with=<%= java.net.URLEncoder.encode(post.get("email"), "UTF-8") %>"
+     			class="mt-2 inline-flex items-center justify-center rounded-lg bg-blue-50 border border-blue-200 px-2.5 py-1 text-[11px] font-semibold text-blue-700 hover:bg-blue-100">
+    			Message Seller
+  				</a>
+			<% } %>
+		</div>
         </div>
       <% } %>
     </div>
