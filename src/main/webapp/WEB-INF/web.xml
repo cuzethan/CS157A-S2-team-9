@@ -144,4 +144,22 @@
     <servlet-name>MyTransactionsJsp</servlet-name>
     <url-pattern>/my-transactions</url-pattern>
 </servlet-mapping>
+
+<servlet>
+    <servlet-name>FavoritesJsp</servlet-name>
+    <jsp-file>/WEB-INF/jsp/favorites/favorites.jsp</jsp-file>
+</servlet>
+<servlet-mapping>
+    <servlet-name>FavoritesJsp</servlet-name>
+    <url-pattern>/favorites</url-pattern>
+</servlet-mapping>
+
+<servlet>
+    <servlet-name>ToggleFavoriteJsp</servlet-name>
+    <jsp-file>/WEB-INF/jsp/favorites/toggle-favorite.jsp</jsp-file>
+</servlet>
+<servlet-mapping>
+    <servlet-name>ToggleFavoriteJsp</servlet-name>
+    <url-pattern>/toggle-favorite</url-pattern>
+</servlet-mapping>
 </web-app>
