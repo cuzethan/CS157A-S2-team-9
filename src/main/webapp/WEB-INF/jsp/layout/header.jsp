@@ -45,6 +45,7 @@
               <a href="<%= ctx %>/my-listings" role="menuitem" class="block rounded-lg px-3 py-2 text-sm font-medium text-slate-700 hover:bg-slate-50">My Listings</a>
               <a href="<%= ctx %>/my-transactions" role="menuitem" class="block rounded-lg px-3 py-2 text-sm font-medium text-slate-700 hover:bg-slate-50">Transactions</a>
               <a href="<%= ctx %>/favorites" role="menuitem" class="block rounded-lg px-3 py-2 text-sm font-medium text-slate-700 hover:bg-slate-50">Favorites</a>
+              <a href="<%= ctx %>/following" role="menuitem" class="block rounded-lg px-3 py-2 text-sm font-medium text-slate-700 hover:bg-slate-50">Following</a>
               <% if (isAdmin) { %>
               <a href="<%= ctx %>/admin-reports" role="menuitem" class="block rounded-lg px-3 py-2 text-sm font-medium text-slate-700 hover:bg-slate-50">Reports</a>
               <a href="<%= ctx %>/admin" role="menuitem" class="block rounded-lg px-3 py-2 text-sm font-medium text-slate-700 hover:bg-slate-50">Admin</a>
@@ -53,6 +54,7 @@
               <% } %>
             </div>
             <div class="border-t border-slate-100 py-1 px-1">
+              <a href="<%= ctx %>/profile" role="menuitem" class="block rounded-lg px-3 py-2 text-sm font-medium text-slate-700 hover:bg-slate-50">My Profile</a>
               <a href="<%= ctx %>/delete-account" role="menuitem" class="block rounded-lg px-3 py-2 text-sm font-medium text-slate-700 hover:bg-slate-50">Account Settings</a>
               <form method="post" action="<%= ctx %>/logout">
                 <button type="submit" role="menuitem" class="w-full rounded-lg px-3 py-2 text-left text-sm font-medium text-red-600 hover:bg-red-50">Log out</button>
@@ -78,6 +80,8 @@
         <a href="<%= ctx %>/my-listings" class="rounded-lg px-3 py-2 hover:bg-slate-50">My Listings</a>
         <a href="<%= ctx %>/my-transactions" class="rounded-lg px-3 py-2 hover:bg-slate-50">Transactions</a>
         <a href="<%= ctx %>/favorites" class="rounded-lg px-3 py-2 hover:bg-slate-50">Favorites</a>
+        <a href="<%= ctx %>/following" class="rounded-lg px-3 py-2 hover:bg-slate-50">Following</a>
+        <a href="<%= ctx %>/profile" class="rounded-lg px-3 py-2 hover:bg-slate-50">My Profile</a>
         <% if (isAdmin) { %>
         <a href="<%= ctx %>/admin-reports" class="rounded-lg px-3 py-2 hover:bg-slate-50">Reports</a>
         <a href="<%= ctx %>/admin" class="rounded-lg px-3 py-2 hover:bg-slate-50">Admin</a>

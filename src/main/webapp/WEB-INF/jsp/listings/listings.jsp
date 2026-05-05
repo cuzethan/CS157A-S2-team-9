@@ -80,8 +80,9 @@ if ("GET".equalsIgnoreCase(request.getMethod())) {
 
     StringBuilder sql = new StringBuilder(
         "SELECT p.post_ID, p.title, p.price, p.description, p.picture, "
-      + "p.item_status, p.email, m.meetup_location, c.category_name "
+      + "p.item_status, p.email, u.username, m.meetup_location, c.category_name "
       + "FROM Posts p "
+      + "JOIN Users u ON p.email = u.email "
       + "JOIN MeetupLocation m ON p.meetup_id = m.meetupID "
       + "INNER JOIN Categories c ON p.category_id = c.category_id "
       + "WHERE p.item_status = 'Available'"
@@ -162,6 +163,7 @@ if ("GET".equalsIgnoreCase(request.getMethod())) {
                 post.put("picture", rs.getString("picture"));
                 post.put("meetupLocation", rs.getString("meetup_location"));
                 post.put("email", rs.getString("email"));
+                post.put("username", rs.getString("username"));
                 String catName = rs.getString("category_name");
                 post.put("categoryName", catName != null ? catName : "");
                 posts.add(post);
@@ -415,6 +417,10 @@ if ("GET".equalsIgnoreCase(request.getMethod())) {
             <p class="text-[12px] text-slate-500 truncate mt-1">
               <%= post.get("meetupLocation") != null ? post.get("meetupLocation") : "" %>
             </p>
+            <a href="<%= request.getContextPath() %>/profile?user=<%= java.net.URLEncoder.encode(post.get("username"), "UTF-8") %>"
+               class="text-[12px] font-semibold text-blue-700 hover:text-blue-800 truncate mt-0.5">
+              @<%= post.get("username") %>
+            </a>
             <% if (loggedIn && myEmail != null && !myEmail.equals(post.get("email"))) { %>
               <a href="<%= request.getContextPath() %>/messages?with=<%= java.net.URLEncoder.encode(post.get("email"), "UTF-8") %>"
                  class="mt-2 inline-flex items-center justify-center rounded-lg bg-blue-50 border border-blue-200 px-2.5 py-1 text-[11px] font-semibold text-blue-700 hover:bg-blue-100">

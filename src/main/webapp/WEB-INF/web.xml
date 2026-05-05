@@ -162,4 +162,31 @@
     <servlet-name>ToggleFavoriteJsp</servlet-name>
     <url-pattern>/toggle-favorite</url-pattern>
 </servlet-mapping>
+
+<servlet>
+    <servlet-name>ProfileJsp</servlet-name>
+    <jsp-file>/WEB-INF/jsp/profile.jsp</jsp-file>
+</servlet>
+<servlet-mapping>
+    <servlet-name>ProfileJsp</servlet-name>
+    <url-pattern>/profile</url-pattern>
+</servlet-mapping>
+
+<servlet>
+    <servlet-name>FollowingJsp</servlet-name>
+    <jsp-file>/WEB-INF/jsp/following/following.jsp</jsp-file>
+</servlet>
+<servlet-mapping>
+    <servlet-name>FollowingJsp</servlet-name>
+    <url-pattern>/following</url-pattern>
+</servlet-mapping>
+
+<servlet>
+    <servlet-name>ToggleFollowJsp</servlet-name>
+    <jsp-file>/WEB-INF/jsp/following/toggle-follow.jsp</jsp-file>
+</servlet>
+<servlet-mapping>
+    <servlet-name>ToggleFollowJsp</servlet-name>
+    <url-pattern>/toggle-follow</url-pattern>
+</servlet-mapping>
 </web-app>

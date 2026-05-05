@@ -84,9 +84,9 @@ if ("POST".equalsIgnoreCase(request.getMethod()) && !Boolean.TRUE.equals(userSes
                             "DELETE FROM Posts WHERE email = ?")) {
                         ps.setString(1, email); ps.executeUpdate();
                     }
-                    // Friends
+                    // Following
                     try (PreparedStatement ps = con.prepareStatement(
-                            "DELETE FROM Friends WHERE user_email1 = ? OR user_email2 = ?")) {
+                            "DELETE FROM Following WHERE user_email1 = ? OR user_email2 = ?")) {
                         ps.setString(1, email); ps.setString(2, email); ps.executeUpdate();
                     }
                     // Reports filed by this user (admin_email FK left intact)

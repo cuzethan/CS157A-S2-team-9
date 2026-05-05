@@ -10,7 +10,7 @@ USE `team_9`;
 SET FOREIGN_KEY_CHECKS = 0;
 
 DROP TABLE IF EXISTS `Favorites`;
-DROP TABLE IF EXISTS `Friends`;
+DROP TABLE IF EXISTS `Following`;
 DROP TABLE IF EXISTS `Reports`;
 DROP TABLE IF EXISTS `Transactions`;
 DROP TABLE IF EXISTS `Messages`;
@@ -123,14 +123,14 @@ CREATE TABLE `Favorites` (
     FOREIGN KEY (`post_ID`) REFERENCES `Posts` (`post_ID`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 
-CREATE TABLE `Friends` (
+CREATE TABLE `Following` (
   `user_email1` varchar(255) NOT NULL,
   `user_email2` varchar(255) NOT NULL,
   PRIMARY KEY (`user_email1`, `user_email2`),
-  KEY `friend_key_idx` (`user_email2`),
-  CONSTRAINT `fk_friends_user_email1`
+  KEY `following_key_idx` (`user_email2`),
+  CONSTRAINT `fk_following_user_email1`
     FOREIGN KEY (`user_email1`) REFERENCES `Users` (`email`),
-  CONSTRAINT `fk_friends_user_email2`
+  CONSTRAINT `fk_following_user_email2`
     FOREIGN KEY (`user_email2`) REFERENCES `Users` (`email`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 

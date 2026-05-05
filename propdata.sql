@@ -92,4 +92,17 @@ INSERT INTO `Favorites` (`email`, `post_ID`, `saved_at`) VALUES
 ('testing1@sjsu.edu', 9,  '2026-05-04 10:40:00'),
 ('testing1@sjsu.edu', 10, '2026-05-04 10:45:00');
 
+/* Sample following data */
+INSERT INTO `Following` (`user_email1`, `user_email2`) VALUES
+('testing1@sjsu.edu', 'blue.spartan@sjsu.edu'),
+('testing1@sjsu.edu', 'speedy.sammy@sjsu.edu'),
+('testing1@sjsu.edu', 'coding.bear@sjsu.edu'),
+('blue.spartan@sjsu.edu', 'testing1@sjsu.edu'),
+('blue.spartan@sjsu.edu', 'golden.gate@sjsu.edu'),
+('golden.gate@sjsu.edu', 'blue.spartan@sjsu.edu'),
+('golden.gate@sjsu.edu', 'testing1@sjsu.edu'),
+('speedy.sammy@sjsu.edu', 'testing1@sjsu.edu'),
+('silicon.valley@sjsu.edu', 'testing1@sjsu.edu'),
+('coding.bear@sjsu.edu', 'testing1@sjsu.edu');
+
 /* Generate transcation data by actually buying/selling items */
