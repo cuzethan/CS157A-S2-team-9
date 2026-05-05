@@ -152,9 +152,9 @@ CREATE TABLE `Reports` (
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 
 INSERT INTO `Users` (`email`, `username`, `password`) VALUES
-  ('testing1@sjsu.edu', 'testing1', '73ceb15f18bb0a313c8880abe54bf61a529dd8f1e75b084dd39926a1518d3d2f'),
-  ('testing2@sjsu.edu', 'testing2', '73ceb15f18bb0a313c8880abe54bf61a529dd8f1e75b084dd39926a1518d3d2f'),
-  ('testing3@sjsu.edu', 'testing3', '73ceb15f18bb0a313c8880abe54bf61a529dd8f1e75b084dd39926a1518d3d2f');
+  ('testing1@sjsu.edu', 'testing1', '5e884898da28047151d0e56f8dc6292773603d0d6aabbdd62a11ef721d1542d8'),
+  ('testing2@sjsu.edu', 'testing2', '5e884898da28047151d0e56f8dc6292773603d0d6aabbdd62a11ef721d1542d8'),
+  ('testing3@sjsu.edu', 'testing3', '5e884898da28047151d0e56f8dc6292773603d0d6aabbdd62a11ef721d1542d8');
 
 INSERT INTO `Administrators` (`email`) VALUES
   ('testing1@sjsu.edu'),

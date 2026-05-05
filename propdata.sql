@@ -40,14 +40,14 @@ INSERT INTO `Posts`
 VALUES
 ('Calculus: Early Transcendentals', 55.00, 'Hardcover, 8th Edition. Minimal wear.', 'https://images.unsplash.com/photo-1543002588-bfa74002ed7e?w=400', 'Available', 'blue.spartan@sjsu.edu', 1, 5),
 ('Gaming Monitor 27"', 140.00, '144Hz refresh rate, 1ms response time.', 'https://images.unsplash.com/photo-1527443224154-c4a3942d3acf?w=400', 'Available', 'silicon.valley@sjsu.edu', 2, 4),
-('iPhone 13 Case', 10.00, 'Clear silicone case, brand new.', 'https://images.unsplash.com/photo-1603313011101-31c7365a538a?w=400', 'Available', 'starlight.dev@sjsu.edu', 3, 2),
-('Study Desk', 40.00, 'Small wooden desk, fits perfect in CV2 dorms.', 'https://images.unsplash.com/photo-1518455027359-f3f816b1a23a?w=400', 'Available', 'tower.hall@sjsu.edu', 4, 1),
+('iPhone 13 Case', 10.00, 'Clear silicone case, brand new.', NULL, 'Available', 'starlight.dev@sjsu.edu', 3, 2),
+('Study Desk', 40.00, 'Small wooden desk, fits perfect in CV2 dorms.', NULL, 'Available', 'tower.hall@sjsu.edu', 4, 1),
 ('Organic Chem Notebook', 5.00, 'Unused, 100 pages of hex grid paper.', 'https://images.unsplash.com/photo-1531346878377-a5be20888e57?w=400', 'Available', 'urban.explorer@sjsu.edu', 5, 7),
 ('SJSU Varsity Jacket', 60.00, 'Vintage style, size Medium.', 'https://images.unsplash.com/photo-1551028719-00167b16eac5?w=400', 'Available', 'golden.gate@sjsu.edu', 6, 9),
 ('Road Bike - 21 Speed', 120.00, 'Great for commuting to campus. Includes lock.', 'https://images.unsplash.com/photo-1485965120184-e220f721d03e?w=400', 'Available', 'speedy.sammy@sjsu.edu', 7, 10),
 ('Summer Sublease - 1bd/1ba', 1100.00, 'Right across from campus, June-August.', 'https://images.unsplash.com/photo-1522708323590-d24dbb6b0267?w=400', 'Available', 'cloud.hiker@sjsu.edu', 8, 5),
 ('Java Programming Tutor', 30.00, 'Help with CS46A/B assignments. $30/hr.', 'https://images.unsplash.com/photo-1517694712202-14dd9538aa97?w=400', 'Available', 'coding.bear@sjsu.edu', 9, 5),
-('Lost AirPods Case', 0.00, 'Found near the fountain. DM to identify.', 'https://images.unsplash.com/photo-1588423770670-f8999f85ff35?w=400', 'Available', 'retro.gamer@sjsu.edu', 10, 10);
+('Lost AirPods Case', 0.00, 'Found near the fountain. DM to identify.', NULL, 'Available', 'retro.gamer@sjsu.edu', 10, 10);
 
 /* Inserting 10 reports based on your hard-coded categories */
 INSERT INTO `Reports` 
