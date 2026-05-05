@@ -266,7 +266,10 @@ private static String validateAdminListing(String title, String priceStr, String
     + "EXISTS (SELECT 1 FROM Administrators a WHERE a.email = u.email) AS isAdmin "
     + "FROM Users u";
   if (sortColumn != null) {
-    usersSql += " ORDER BY " + sortColumn + " " + dir + ", u.username ASC";
+    usersSql += " ORDER BY " + sortColumn + " " + dir;
+  } else {
+    // No explicit sort: avoid PK/email order (looks like a default sort). Stable but not meaningful.
+    usersSql += " ORDER BY MD5(u.email)";
   }
 
   try (Connection con = Database.getConnection();
