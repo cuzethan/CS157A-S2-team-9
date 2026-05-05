@@ -10,4 +10,4 @@ Database.java isn't a serverlet, only a utility, so I hope you'll allow this exc
 * The url to access the website locally should be http://localhost:8080/CS157A-Project/
 * In the init_db.sql script, there's is a test user with admins already generated
 ex. (Username: "testing1", Password: "password")
-* For testing purposes, run initdb.sql to get the tables properly configured, then set the propdata.sql
+* For testing purposes, run initdb.sql to get the tables properly configured, then run propdata.sql to get sample data inside your tables.
