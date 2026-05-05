@@ -33,6 +33,10 @@
         </span>
       </div>
       <p class="mt-1 text-lg font-semibold text-slate-800">$<%= post.get("price") %></p>
+      <% String cardCategory = post.get("categoryName");
+         if (cardCategory != null && !cardCategory.isEmpty()) { %>
+        <p class="mt-0.5 text-xs font-medium text-slate-600"><%= cardCategory %></p>
+      <% } %>
       <% if (post.get("meetupLocation") != null) { %>
         <p class="mt-0.5 text-xs text-slate-500 flex items-center gap-1">
           <svg class="h-3 w-3 text-slate-400 flex-shrink-0" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M15 10.5a3 3 0 11-6 0 3 3 0 016 0z"/><path stroke-linecap="round" stroke-linejoin="round" d="M19.5 10.5c0 7.142-7.5 11.25-7.5 11.25S4.5 17.642 4.5 10.5a7.5 7.5 0 1115 0z"/></svg>

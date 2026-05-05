@@ -28,7 +28,25 @@ private static void loadMeetupLocations(javax.servlet.http.HttpServletRequest re
     request.setAttribute("meetupLocations", locations);
 }
 
-private static String validateListing(String title, String priceStr, String description, String meetupId) {
+private static void loadCategories(javax.servlet.http.HttpServletRequest request) {
+    List<Map<String, String>> categories = new ArrayList<>();
+    String sql = "SELECT category_id, category_name FROM Categories ORDER BY category_name";
+    try (Connection con = Database.getConnection();
+         PreparedStatement ps = con.prepareStatement(sql);
+         ResultSet rs = ps.executeQuery()) {
+        while (rs.next()) {
+            Map<String, String> cat = new HashMap<>();
+            cat.put("id", String.valueOf(rs.getInt("category_id")));
+            cat.put("name", rs.getString("category_name"));
+            categories.add(cat);
+        }
+    } catch (SQLException e) {
+        e.printStackTrace();
+    }
+    request.setAttribute("listingCategories", categories);
+}
+
+private static String validateListing(String title, String priceStr, String description, String meetupId, String categoryId) {
     if (title == null || title.isEmpty()) {
         return "Item title is required.";
     }
@@ -51,6 +69,14 @@ private static String validateListing(String title, String priceStr, String desc
     }
     if (meetupId == null || meetupId.isEmpty()) {
         return "Meetup location is required.";
+    }
+    if (categoryId == null || categoryId.isEmpty()) {
+        return "Category is required.";
+    }
+    try {
+        Integer.parseInt(categoryId);
+    } catch (NumberFormatException e) {
+        return "Please select a valid category.";
     }
     return null;
 }
@@ -92,6 +118,7 @@ if ("POST".equalsIgnoreCase(request.getMethod())) {
     String picture = trimToNull(request.getParameter("picture"));
     String locationDetails = trimToNull(request.getParameter("locationDetails"));
     String meetupIdStr = trimToNull(request.getParameter("meetupId"));
+    String categoryIdStr = trimToNull(request.getParameter("categoryId"));
 
     request.setAttribute("titleValue", title);
     request.setAttribute("priceValue", priceStr);
@@ -99,16 +126,19 @@ if ("POST".equalsIgnoreCase(request.getMethod())) {
     request.setAttribute("pictureValue", picture);
     request.setAttribute("locationValue", locationDetails);
     request.setAttribute("meetupValue", meetupIdStr);
+    request.setAttribute("categoryValue", categoryIdStr);
 
-    String error = validateListing(title, priceStr, description, meetupIdStr);
+    String error = validateListing(title, priceStr, description, meetupIdStr, categoryIdStr);
     if (error != null) {
         request.setAttribute("formError", error);
         loadMeetupLocations(request);
+        loadCategories(request);
     } else {
         BigDecimal price = new BigDecimal(priceStr);
         int meetupId = Integer.parseInt(meetupIdStr);
+        int categoryId = Integer.parseInt(categoryIdStr);
         String sql = "UPDATE Posts SET title = ?, price = ?, description = ?, picture = ?, "
-                   + "location_details_specific = ?, meetup_id = ? "
+                   + "location_details_specific = ?, meetup_id = ?, category_id = ? "
                    + "WHERE post_ID = ? AND email = ?";
 
         try (Connection con = Database.getConnection();
@@ -119,17 +149,20 @@ if ("POST".equalsIgnoreCase(request.getMethod())) {
             ps.setString(4, picture);
             ps.setString(5, locationDetails);
             ps.setInt(6, meetupId);
-            ps.setInt(7, postId);
-            ps.setString(8, email);
+            ps.setInt(7, categoryId);
+            ps.setInt(8, postId);
+            ps.setString(9, email);
             int rows = ps.executeUpdate();
             if (rows == 0) {
                 request.setAttribute("formError", "Listing not found or you do not have permission to edit it.");
                 loadMeetupLocations(request);
+                loadCategories(request);
             }
         } catch (SQLException e) {
             e.printStackTrace();
             request.setAttribute("formError", "Database error: " + e.getMessage());
             loadMeetupLocations(request);
+            loadCategories(request);
         }
 
         if (request.getAttribute("formError") == null) {
@@ -140,7 +173,7 @@ if ("POST".equalsIgnoreCase(request.getMethod())) {
 } else {
 
     String sql = "SELECT p.title, p.price, p.description, p.picture, "
-               + "p.location_details_specific, p.meetup_id "
+               + "p.location_details_specific, p.meetup_id, p.category_id "
                + "FROM Posts p WHERE p.post_ID = ? AND p.email = ?";
 
     try (Connection con = Database.getConnection();
@@ -156,6 +189,8 @@ if ("POST".equalsIgnoreCase(request.getMethod())) {
                 request.setAttribute("locationValue", rs.getString("location_details_specific"));
                 int meetupId = rs.getInt("meetup_id");
                 request.setAttribute("meetupValue", meetupId > 0 ? String.valueOf(meetupId) : null);
+                int categoryIdCol = rs.getInt("category_id");
+                request.setAttribute("categoryValue", rs.wasNull() || categoryIdCol <= 0 ? null : String.valueOf(categoryIdCol));
             } else {
                 response.sendRedirect(request.getContextPath() + "/my-listings");
                 return;
@@ -168,6 +203,7 @@ if ("POST".equalsIgnoreCase(request.getMethod())) {
     }
 
     loadMeetupLocations(request);
+    loadCategories(request);
 }
 %>
 <%
@@ -184,9 +220,12 @@ if ("POST".equalsIgnoreCase(request.getMethod())) {
   String pictureValue = (String) request.getAttribute("pictureValue");
   String locationValue = (String) request.getAttribute("locationValue");
   String meetupValue = (String) request.getAttribute("meetupValue");
+  String categoryValue = (String) request.getAttribute("categoryValue");
 
   List<Map<String, String>> meetupLocations =
       (List<Map<String, String>>) request.getAttribute("meetupLocations");
+  List<Map<String, String>> listingCategories =
+      (List<Map<String, String>>) request.getAttribute("listingCategories");
 %>
 
 <div class="mx-auto w-full max-w-lg bg-white rounded-2xl shadow-sm p-8">
@@ -216,6 +255,21 @@ if ("POST".equalsIgnoreCase(request.getMethod())) {
       <label class="block text-sm font-medium text-slate-700" for="description">Description <span class="text-red-500">*</span></label>
       <textarea id="description" name="description" rows="4" required
                 class="mt-1 w-full rounded-lg border border-slate-300 bg-white px-3 py-2 text-sm text-slate-900 shadow-sm focus:border-blue-600 focus:outline-none focus:ring-2 focus:ring-blue-600/20"><%= descriptionValue != null ? descriptionValue : "" %></textarea>
+    </div>
+    <div>
+      <label class="block text-sm font-medium text-slate-700" for="categoryId">Category <span class="text-red-500">*</span></label>
+      <select id="categoryId" name="categoryId" required
+              class="mt-1 w-full rounded-lg border border-slate-300 bg-white px-3 py-2 text-sm text-slate-900 shadow-sm focus:border-blue-600 focus:outline-none focus:ring-2 focus:ring-blue-600/20">
+        <option value="">Select a category</option>
+        <% if (listingCategories != null) {
+             for (Map<String, String> cat : listingCategories) {
+               String selected = cat.get("id").equals(categoryValue) ? "selected" : "";
+        %>
+          <option value="<%= cat.get("id") %>" <%= selected %>><%= cat.get("name") %></option>
+        <%   }
+           }
+        %>
+      </select>
     </div>
     <div>
       <label class="block text-sm font-medium text-slate-700" for="meetupId">Meetup Location <span class="text-red-500">*</span></label>

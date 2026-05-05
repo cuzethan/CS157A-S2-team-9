@@ -152,10 +152,14 @@ CREATE TABLE `Reports` (
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 
 INSERT INTO `Users` (`email`, `username`, `password`) VALUES
-  ('testing@sjsu.edu', 'testing', '73ceb15f18bb0a313c8880abe54bf61a529dd8f1e75b084dd39926a1518d3d2f');
+  ('testing1@sjsu.edu', 'testing1', '73ceb15f18bb0a313c8880abe54bf61a529dd8f1e75b084dd39926a1518d3d2f'),
+  ('testing2@sjsu.edu', 'testing2', '73ceb15f18bb0a313c8880abe54bf61a529dd8f1e75b084dd39926a1518d3d2f'),
+  ('testing3@sjsu.edu', 'testing3', '73ceb15f18bb0a313c8880abe54bf61a529dd8f1e75b084dd39926a1518d3d2f');
 
 INSERT INTO `Administrators` (`email`) VALUES
-  ('testing@sjsu.edu');
+  ('testing1@sjsu.edu'),
+  ('testing2@sjsu.edu'),
+  ('testing3@sjsu.edu');
 
 INSERT INTO `MeetupLocation` (`meetup_location`) VALUES
   ('MacQuarrie Hall'),
@@ -168,3 +172,15 @@ INSERT INTO `MeetupLocation` (`meetup_location`) VALUES
   ('Yoshihiro Uchida Hall'),
   ('Campus Village Bookstore'),
   ('7th Street Plaza');
+
+INSERT INTO `Categories` (`category_name`) VALUES
+  ('Textbooks'),
+  ('Tech & Electronics'),
+  ('Sports & Outdoors'),
+  ('Furniture'),
+  ('School Supplies'),
+  ('Clothing'),
+  ('Bikes & Scooters'),
+  ('Housing & Subleases'),
+  ('Tutoring Services'),
+  ('Other');

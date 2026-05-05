@@ -21,10 +21,11 @@ if (myEmail == null) {
 List<Map<String, String>> favPosts = new ArrayList<>();
 
 String sql = "SELECT p.post_ID, p.title, p.price, p.description, p.picture, "
-           + "p.item_status, p.email, m.meetup_location, f.saved_at "
+           + "p.item_status, p.email, m.meetup_location, c.category_name, f.saved_at "
            + "FROM Favorites f "
            + "JOIN Posts p ON f.post_ID = p.post_ID "
            + "JOIN MeetupLocation m ON p.meetup_id = m.meetupID "
+           + "INNER JOIN Categories c ON p.category_id = c.category_id "
            + "WHERE f.email = ? "
            + "ORDER BY f.saved_at DESC";
 
@@ -42,6 +43,8 @@ try (Connection con = Database.getConnection();
             post.put("status", rs.getString("item_status"));
             post.put("email", rs.getString("email"));
             post.put("meetupLocation", rs.getString("meetup_location"));
+            String favCat = rs.getString("category_name");
+            post.put("categoryName", favCat != null ? favCat : "");
             favPosts.add(post);
         }
     }
@@ -113,6 +116,10 @@ request.setAttribute("favPosts", favPosts);
           <div class="mt-2 px-0.5 flex flex-col flex-1">
             <p class="text-sm font-bold text-slate-900">$<%= post.get("price") %></p>
             <p class="text-[13px] font-normal text-slate-800 line-clamp-2 leading-tight mt-0.5"><%= post.get("title") %></p>
+            <% String favBrowseCat = post.get("categoryName");
+               if (favBrowseCat != null && !favBrowseCat.isEmpty()) { %>
+              <p class="text-[11px] font-medium text-slate-500 truncate mt-0.5"><%= favBrowseCat %></p>
+            <% } %>
             <p class="text-[12px] text-slate-500 truncate mt-1">
               <%= post.get("meetupLocation") != null ? post.get("meetupLocation") : "" %>
             </p>

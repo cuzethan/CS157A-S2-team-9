@@ -6,7 +6,7 @@ private static String trimToNull(String value) {
   return trimmed.isEmpty() ? null : trimmed;
 }
 
-private static String validateAdminListing(String title, String priceStr, String description, String meetupId, String status) {
+private static String validateAdminListing(String title, String priceStr, String description, String meetupId, String categoryId, String status) {
   if (title == null || title.isEmpty()) return "Item title is required.";
   if (title.length() > 45) return "Item title must be 45 characters or fewer.";
   if (priceStr == null || priceStr.isEmpty()) return "Price is required.";
@@ -18,6 +18,12 @@ private static String validateAdminListing(String title, String priceStr, String
   }
   if (description == null || description.isEmpty()) return "Description is required.";
   if (meetupId == null || meetupId.isEmpty()) return "Meetup location is required.";
+  if (categoryId == null || categoryId.isEmpty()) return "Category is required.";
+  try {
+    Integer.parseInt(categoryId);
+  } catch (NumberFormatException e) {
+    return "Please select a valid category.";
+  }
   if (!"Available".equals(status) && !"Sold".equals(status)) return "Status must be Available or Sold.";
   return null;
 }
@@ -189,6 +195,7 @@ private static String validateAdminListing(String title, String priceStr, String
           String picture = trimToNull(request.getParameter("picture"));
           String locationDetails = trimToNull(request.getParameter("locationDetails"));
           String meetupIdStr = trimToNull(request.getParameter("meetupId"));
+          String categoryIdStr = trimToNull(request.getParameter("categoryId"));
           String status = trimToNull(request.getParameter("status"));
 
           if (postIdStr == null) {
@@ -197,7 +204,7 @@ private static String validateAdminListing(String title, String priceStr, String
             return;
           }
 
-          String validationError = validateAdminListing(title, priceStr, description, meetupIdStr, status);
+          String validationError = validateAdminListing(title, priceStr, description, meetupIdStr, categoryIdStr, status);
           if (validationError != null) {
             response.sendRedirect(baseRedirect + "&postStatus=error&postMessage="
                 + URLEncoder.encode(validationError, StandardCharsets.UTF_8));
@@ -207,10 +214,11 @@ private static String validateAdminListing(String title, String priceStr, String
           int postId = Integer.parseInt(postIdStr);
           BigDecimal price = new BigDecimal(priceStr);
           int meetupId = Integer.parseInt(meetupIdStr);
+          int categoryId = Integer.parseInt(categoryIdStr);
           // Update all editable post fields, scoped to the selected owner's email.
           String updateSql = "UPDATE Posts "
                            + "SET title = ?, price = ?, description = ?, picture = ?, "
-                           + "location_details_specific = ?, meetup_id = ?, item_status = ? "
+                           + "location_details_specific = ?, meetup_id = ?, category_id = ?, item_status = ? "
                            + "WHERE post_ID = ? AND email = ?";
           try (Connection con = Database.getConnection();
                PreparedStatement ps = con.prepareStatement(updateSql)) {
@@ -220,9 +228,10 @@ private static String validateAdminListing(String title, String priceStr, String
             ps.setString(4, picture);
             ps.setString(5, locationDetails);
             ps.setInt(6, meetupId);
-            ps.setString(7, status);
-            ps.setInt(8, postId);
-            ps.setString(9, targetEmail);
+            ps.setInt(7, categoryId);
+            ps.setString(8, status);
+            ps.setInt(9, postId);
+            ps.setString(10, targetEmail);
             int updated = ps.executeUpdate();
             if (updated <= 0) {
               response.sendRedirect(baseRedirect + "&postStatus=error&postMessage="
@@ -280,6 +289,7 @@ private static String validateAdminListing(String title, String priceStr, String
   String selectedUserName = null;
   List<Map<String, String>> selectedUserPosts = new ArrayList<>();
   List<Map<String, String>> meetupLocations = new ArrayList<>();
+  List<Map<String, String>> listingCategories = new ArrayList<>();
   if (selectedUser != null) {
     try (Connection con = Database.getConnection()) {
       // Resolve selected user's display name; clear selection if email no longer exists.
@@ -299,8 +309,9 @@ private static String validateAdminListing(String title, String priceStr, String
         // Load posts for the selected user with meetup location names for display.
         String postsSql =
             "SELECT p.post_ID, p.title, p.price, p.description, p.picture, p.item_status, "
-          + "p.location_details_specific, p.meetup_id, m.meetup_location "
+          + "p.location_details_specific, p.meetup_id, p.category_id, m.meetup_location, c.category_name "
           + "FROM Posts p JOIN MeetupLocation m ON p.meetup_id = m.meetupID "
+          + "INNER JOIN Categories c ON p.category_id = c.category_id "
           + "WHERE p.email = ? ORDER BY p.post_ID DESC";
         try (PreparedStatement postsPs = con.prepareStatement(postsSql)) {
           postsPs.setString(1, selectedUser);
@@ -316,6 +327,10 @@ private static String validateAdminListing(String title, String priceStr, String
               post.put("locationDetails", rs.getString("location_details_specific"));
               post.put("meetupId", String.valueOf(rs.getInt("meetup_id")));
               post.put("meetupLocation", rs.getString("meetup_location"));
+              int catId = rs.getInt("category_id");
+              post.put("categoryId", rs.wasNull() || catId <= 0 ? "" : String.valueOf(catId));
+              String cname = rs.getString("category_name");
+              post.put("categoryName", cname != null ? cname : "");
               selectedUserPosts.add(post);
             }
           }
@@ -330,6 +345,17 @@ private static String validateAdminListing(String title, String priceStr, String
             loc.put("id", String.valueOf(rs.getInt("meetupID")));
             loc.put("name", rs.getString("meetup_location"));
             meetupLocations.add(loc);
+          }
+        }
+
+        try (PreparedStatement catPs = con.prepareStatement(
+            "SELECT category_id, category_name FROM Categories ORDER BY category_name");
+             ResultSet rs = catPs.executeQuery()) {
+          while (rs.next()) {
+            Map<String, String> cat = new HashMap<>();
+            cat.put("id", String.valueOf(rs.getInt("category_id")));
+            cat.put("name", rs.getString("category_name"));
+            listingCategories.add(cat);
           }
         }
       }

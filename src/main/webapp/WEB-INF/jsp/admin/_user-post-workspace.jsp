@@ -40,6 +40,7 @@
            String picture = post.get("picture");
            String locationDetails = post.get("locationDetails");
            String meetupId = post.get("meetupId");
+           String categoryId = post.get("categoryId");
            String status = post.get("status");
       %>
         <%-- Each post expands to reveal an inline admin edit form. --%>
@@ -48,7 +49,9 @@
             <div class="flex flex-col gap-2 sm:flex-row sm:items-center sm:justify-between">
               <div>
                 <p class="text-sm font-semibold text-slate-900"><%= title %></p>
-                <p class="text-xs text-slate-500">Post #<%= postId %> &middot; <%= post.get("meetupLocation") %></p>
+                <p class="text-xs text-slate-500">Post #<%= postId %><%
+                  String sumCat = post.get("categoryName");
+                  if (sumCat != null && !sumCat.isEmpty()) { %> &middot; <%= sumCat %><% } %> &middot; <%= post.get("meetupLocation") %></p>
               </div>
               <div class="text-sm font-semibold text-slate-800">$<%= price %></div>
             </div>
@@ -86,6 +89,19 @@
                      String selected = loc.get("id").equals(meetupId) ? "selected" : "";
                 %>
                   <option value="<%= loc.get("id") %>" <%= selected %>><%= loc.get("name") %></option>
+                <% } %>
+              </select>
+            </label>
+
+            <label class="text-sm text-slate-700">
+              Category
+              <select name="categoryId" required
+                      class="mt-1 w-full rounded-lg border border-slate-300 px-3 py-2 text-sm focus:border-indigo-500 focus:outline-none focus:ring-2 focus:ring-indigo-200">
+                <option value="">Select a category</option>
+                <% for (Map<String, String> cat : listingCategories) {
+                     String catSelected = (categoryId != null && cat.get("id").equals(categoryId)) ? "selected" : "";
+                %>
+                  <option value="<%= cat.get("id") %>" <%= catSelected %>><%= cat.get("name") %></option>
                 <% } %>
               </select>
             </label>

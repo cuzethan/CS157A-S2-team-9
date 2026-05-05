@@ -75,9 +75,10 @@ if ("POST".equalsIgnoreCase(request.getMethod())) {
 
 
 String sql = "SELECT p.post_ID, p.title, p.price, p.description, p.picture, "
-           + "p.item_status, m.meetup_location "
+           + "p.item_status, m.meetup_location, c.category_name "
            + "FROM Posts p "
            + "JOIN MeetupLocation m ON p.meetup_id = m.meetupID "
+           + "INNER JOIN Categories c ON p.category_id = c.category_id "
            + "WHERE p.email = ? "
            + "ORDER BY p.post_ID DESC";
 
@@ -96,6 +97,8 @@ try (Connection con = Database.getConnection();
             post.put("picture", rs.getString("picture"));
             post.put("status", rs.getString("item_status"));
             post.put("meetupLocation", rs.getString("meetup_location"));
+            String catNm = rs.getString("category_name");
+            post.put("categoryName", catNm != null ? catNm : "");
             posts.add(post);
         }
     }
